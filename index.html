@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM BREACHED</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        #container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .glitch {
+            animation: glitch 1s infinite;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px #ff00ff; }
+            25% { text-shadow: -2px -2px #00ffff; }
+            50% { text-shadow: 2px -2px #ff00ff; }
+            75% { text-shadow: -2px 2px #00ffff; }
+            100% { text-shadow: 2px 2px #ff00ff; }
+        }
+
+        .typing {
+            border-right: 2px solid #00ff00;
+            animation: typing 0.5s infinite;
+        }
+
+        @keyframes typing {
+            from { border-color: transparent; }
+            to { border-color: #00ff00; }
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 20px;
+            background-color: #00ff00;
+            transition: width 0.5s;
+            margin: 20px 0;
+        }
+
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg" id="matrix"></div>
+    <div id="container">
+        <h1 class="glitch">[[ SYSTEM BREACHED ]]</h1>
+        <p id="output">> INITIALIZING SYSTEM SCAN...</p>
+        <div id="progress-bar"></div>
+        <p id="final-message" style="display: none;">
+            Just kidding! 😄<br>
+            Your laptop is safe...<br>
+            But maybe update your antivirus!<br>
+            How are you doing today? 🙂
+        </p>
+        <button id="panic-button" style="display: none; background: black; color: #00ff00; border: 1px solid #00ff00; padding: 10px; cursor: pointer;">
+            CLICK TO STOP SIMULATION
+        </button>
+    </div>
+
+    <script>
+        const messages = [
+            "> ACCESSING MAINFRAME...",
+            "> BYPASSING SECURITY...",
+            "> DOWNLOADING SENSITIVE DATA...",
+            "> LOCATING IP ADDRESS...",
+            "> FOUND: 192.168.1.1",
+            "> GPS COORDINATES ACQUIRED...",
+            "> ENCRYPTING FILES...",
+            "> SCANNING WEBCAM...",
+            "> MICROPHONE ACCESS GRANTED..."
+        ];
+
+        const output = document.getElementById('output');
+        const progressBar = document.getElementById('progress-bar');
+        const finalMessage = document.getElementById('final-message');
+        const panicButton = document.getElementById('panic-button');
+        let currentProgress = 0;
+
+        function randomHex() {
+            return Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
+        }
+
+        function createMatrixEffect() {
+            const chars = '01';
+            const matrix = document.getElementById('matrix');
+            
+            setInterval(() => {
+                matrix.innerHTML = Array(100).fill().map(() => 
+                    `<span style="color:#${randomHex()}${randomHex()}${randomHex()}">${chars[Math.floor(Math.random() * chars.length)]}</span>`
+                ).join('');
+            }, 100);
+        }
+
+        function simulateHack() {
+            let messageIndex = 0;
+            
+            const interval = setInterval(() => {
+                output.innerHTML = messages[messageIndex] + 
+                    `<span class="typing">${Math.random().toString(36).substr(2, 5)}</span>`;
+                
+                currentProgress += Math.random() * 5;
+                progressBar.style.width = Math.min(currentProgress, 100) + '%';
+                
+                if(messageIndex >= messages.length - 1) {
+                    clearInterval(interval);
+                    progressBar.style.width = '100%';
+                    setTimeout(() => {
+                        output.style.display = 'none';
+                        finalMessage.style.display = 'block';
+                        panicButton.style.display = 'block';
+                    }, 2000);
+                }
+                messageIndex++;
+            }, 1500);
+        }
+
+        panicButton.addEventListener('click', () => {
+            document.location.reload();
+        });
+
+        // Start effects
+        createMatrixEffect();
+        simulateHack();
+
+        // Add keyboard listener
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape') {
+                document.location.reload();
+            }
+        });
+    </script>
+</body>
+</html>
